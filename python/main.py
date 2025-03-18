@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from event_store import EventStore
 from command_handler import UserCommandHandler
 from query_handler import UserQueryHandler
 
@@ -6,6 +7,7 @@ app = FastAPI()
 
 command_handler = UserCommandHandler()
 query_handler = UserQueryHandler()
+event_store = EventStore()
 
 
 @app.get("/")
@@ -31,3 +33,9 @@ def get_user(user_id: int):
 @app.get("/users/")
 def list_users():
     return query_handler.list_users()
+
+
+@app.get("/events/")
+def get_all_events():
+    """Retrieve all stored events from the database."""
+    return event_store.get_all_events()
